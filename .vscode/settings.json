@@ -1,0 +1,5 @@
+{
+    "liveServer.settings.multiRootWorkspaceName": "Vue",
+    "liveServer.settings.CustomBrowser": "chrome", //设置默认打开的浏览器
+    "editor.maxTokenizationLineLength": 999999999,
+}

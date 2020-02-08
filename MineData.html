@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<!-- saved from url=(0094)http://minedata.cn/operate/general?solution=13533&accessToken=ffdbf70b619544919ce8dab692a7dc03 -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="Keywords" content="MineData">
+    <meta name="Description" content="MineData">
+    <meta name="robots" content="none">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="maximum-scale=1.0">
+
+
+    <title>MineData</title>
+
+    <link href="http://minedata.cn/app/images/common/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="./Style/loading.css" rel="stylesheet">
+    <link href="./Style/minemap.css" rel="stylesheet">
+    <link href="./Style/commons.min.css" rel="stylesheet">
+    <link href="./Style/operate.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="//minedata.cn/minemapapi/v2.0.0/minemap.css">
+    <script src="//minedata.cn/minemapapi/v2.0.0/plugins/echarts/echarts.min.js"></script>
+    <script src="//minedata.cn/minemapapi/v2.0.0/plugins/template/template.js"></script>
+    <script src="//minedata.cn/minemapapi/v2.0.0/minemap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <div>
+            <div class="page-container">
+                <div class="page-body-abs-container">
+                    <div class="operate-general-body" id="app">
+                        <div class="operate-general-menu-panel">
+                            <!--一级菜单栏-->
+                            <div class="menu-list-box">
+                                <div class="menu-main" v-on:click="changeStatus(0)"><i class="iconfont icon-back"></i>
+                                </div>
+                                <div class="menu-item" id="panel1" v-on:click="changeStatus(1)">
+                                    <div class="menu-icon"><span class="iconfont icon-list_basedata"></span></div>
+                                    <div class="menu-content"><span>基础热力图</span></div>
+                                </div>
+                                <div class="menu-item" id="panel2" v-on:click="changeStatus(2)">
+                                    <div class="menu-icon"><span class="iconfont icon-list_especialldata"></span></div>
+                                    <div class="menu-content"><span>风险模式</span></div>
+                                </div>
+                                <div class="menu-item" id="panel3" v-on:click="changeStatus(3)">
+                                    <div class="menu-icon"><span class="iconfont icon-list_userdata"></span></div>
+                                    <div class="menu-content"><span>规划管理</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--这三个panel应该被封装成一个组件-->
+                        <div class="operate-general-panel" id="sub-panel2" v-if="show1">
+                            <!--二级菜单栏 （风险模式）-->
+                            <div class="general-header-box">
+                                <div class="header-box">
+                                    <div class="header-label">危险品管理_1</div>
+                                    <div class="header-icon"><span class="iconfont icon-edit"></span></div>
+                                </div>
+                                <div class="header-edit-label">MineMap <span
+                                        style="font-size: 12px; color: rgb(255, 153, 0);">Beta</span></div>
+                                <div class="header-edit-btn">专业版</div>
+                            </div>
+                            <div class="general-sub-panel">
+                                <!--二级选择菜单-->
+                                <div class="general-data-box">
+                                    <div class="data-list-box scroll-styled2">
+                                        <ul class="data-group-ul">
+                                            <li class="data-group-li">
+                                                <ul class="data-item-ul">
+                                                    <li class="data-item-li">
+                                                        <div class="data-item-box">
+                                                            <div class="item-icon-box-group item-icon-box"><i
+                                                                    class="iconfont icon-code-201"></i></div>
+                                                            <div class="item-info-box-group item-info-box"
+                                                                onclick="show_heatMap_people()">人群分布热力图</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="data-group-li">
+                                                <ul class="data-item-ul">
+                                                    <li class="data-item-li">
+                                                        <div class="data-item-box">
+                                                            <div class="item-icon-box-group item-icon-box"><i
+                                                                    class="iconfont icon-code-202"></i></div>
+                                                            <div class="item-info-box-group item-info-box"
+                                                                onclick="show_heatMap_transport()">车辆轨迹热力图</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="data-group-li">
+                                                <ul class="data-item-ul">
+                                                    <li class="data-item-li">
+                                                        <div class="data-item-box">
+                                                            <div class="item-icon-box-group item-icon-box"><i
+                                                                    class="iconfont icon-code-203"></i></div>
+                                                            <div class="item-info-box-group item-info-box"
+                                                                onclick="show_heatMap_danger()">风险系数热力图</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="operate-general-panel" id="sub-panel1" v-if="show2">
+                            <!--二级菜单栏 (热力图)-->
+                            <div class="general-header-box">
+                                <div class="header-box">
+                                    <div class="header-label">危险品管理_1</div>
+                                    <div class="header-icon"><span class="iconfont icon-edit"></span></div>
+                                </div>
+                                <div class="header-edit-label">MineMap <span
+                                        style="font-size: 12px; color: rgb(255, 153, 0);">Beta</span></div>
+                                <div class="header-edit-btn">专业版</div>
+                            </div>
+                            <div class="general-sub-panel">
+                                <!--二级选择菜单-->
+                                <div class="general-data-box">
+                                    <div class="data-list-box scroll-styled2">
+                                        <ul class="data-group-ul">
+                                            <li class="data-group-li">
+                                                <ul class="data-item-ul">
+                                                    <li class="data-item-li">
+                                                        <div class="data-item-box">
+                                                            <div class="item-icon-box-group item-icon-box"><i
+                                                                    class="iconfont icon-code-201"></i></div>
+                                                            <div class="item-info-box-group item-info-box">风险发掘</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="data-group-li">
+                                                <ul class="data-item-ul">
+                                                    <li class="data-item-li">
+                                                        <div class="data-item-box">
+                                                            <div class="item-icon-box-group item-icon-box"><i
+                                                                    class="iconfont icon-code-202"></i></div>
+                                                            <div class="item-info-box-group item-info-box">风险排名</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="data-group-li">
+                                                <ul class="data-item-ul">
+                                                    <li class="data-item-li">
+                                                        <div class="data-item-box">
+                                                            <div class="item-icon-box-group item-icon-box"><i
+                                                                    class="iconfont icon-code-203"></i></div>
+                                                            <div class="item-info-box-group item-info-box">风险因果</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="operate-general-panel" id="sub-panel3" v-if="show3">
+                            <!--二级菜单栏 （规划管理）-->
+                            <div class="general-header-box">
+                                <div class="header-box">
+                                    <div class="header-label">危险品管理_1</div>
+                                    <div class="header-icon"><span class="iconfont icon-edit"></span></div>
+                                </div>
+                                <div class="header-edit-label">MineMap <span
+                                        style="font-size: 12px; color: rgb(255, 153, 0);">Beta</span></div>
+                                <div class="header-edit-btn">专业版</div>
+                            </div>
+                            <div class="general-sub-panel">
+                                <!--二级选择菜单-->
+                                <div class="general-data-box">
+                                    <div class="data-list-box scroll-styled2">
+                                        <ul class="data-group-ul">
+                                            <li class="data-group-li">
+                                                <ul class="data-item-ul">
+                                                    <li class="data-item-li">
+                                                        <div class="data-item-box">
+                                                            <div class="item-icon-box-group item-icon-box"><i
+                                                                    class="iconfont icon-code-201"></i></div>
+                                                            <div class="item-info-box-group item-info-box">合理地区选择</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="data-group-li">
+                                                <ul class="data-item-ul">
+                                                    <li class="data-item-li">
+                                                        <div class="data-item-box">
+                                                            <div class="item-icon-box-group item-icon-box"><i
+                                                                    class="iconfont icon-code-202"></i></div>
+                                                            <div class="item-info-box-group item-info-box">路径规划</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="data-group-li">
+                                                <ul class="data-item-ul">
+                                                    <li class="data-item-li">
+                                                        <div class="data-item-box">
+                                                            <div class="item-icon-box-group item-icon-box"><i
+                                                                    class="iconfont icon-code-203"></i></div>
+                                                            <div class="item-info-box-group item-info-box">消防设备</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                            <li class="data-group-li">
+                                                <ul class="data-item-ul">
+                                                    <li class="data-item-li">
+                                                        <div class="data-item-box">
+                                                            <div class="item-icon-box-group item-icon-box"><i
+                                                                    class="iconfont icon-code-103"></i></div>
+                                                            <div class="item-info-box-group item-info-box">应急方案</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="operate-general-panel" id="sub-panel4" v-if="show4">
+                            <!--二级菜单栏 （占位 :: 防止出现空白）-->
+                            <div class="general-header-box">
+                                <div class="header-box">
+                                    <div class="header-label">危险品管理_1</div>
+                                    <div class="header-icon"><span class="iconfont icon-edit"></span></div>
+                                </div>
+                                <div class="header-edit-label">MineMap <span
+                                        style="font-size: 12px; color: rgb(255, 153, 0);">Beta</span></div>
+                                <div class="header-edit-btn">专业版</div>
+                            </div>
+                            <div class="general-sub-panel">
+                                <!--二级选择菜单-->
+                                <div class="general-data-box">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="operate-general-map-container minemap-common-container">
+                            <!-- 地图最外层div-->
+                            <div id="map"
+                                class="minemap-canvas-container minemap-interactive minemap-touch-drag-pan minemap-touch-zoom-rotate">
+                                <!--地图的基本图层-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./JS/menu.js"></script>
+    <script src="//minedata.cn/minemapapi/v2.0.0/plugins/template/template.js"></script>
+    <!--<script src="./JS/map.js"></script>
+    <script src="./JS/heatMap_people.js"></script>
+    <script src="./JS/heatMap_transport.js"></script>
+    <script src="./JS/heatMap_danger.js"></script>-->
+
+    <script>
+        minemap.domainUrl = '//minedata.cn';
+        minemap.spriteUrl = '//minedata.cn/minemapapi/v2.0.0/sprite/sprite';
+        minemap.serviceUrl = '//minedata.cn/service';
+        // 设置方案的accessToken和solution
+        minemap.accessToken = "98d59302bde34eb3ba08f31a70b7f524";
+        minemap.solution = 13534;
+        var map = new minemap.Map({
+            container: 'map', // 容器id
+            style: "//minedata.cn/service/solu/style/id/13534", // 地图样式
+            center: [116.46, 39.92], // 中心点
+            zoom: 10, // 地图缩放级别
+            pitch: 30, // 地图倾斜角度
+            maxZoom: 17,
+            minZoom: 3
+        });
+        map.addControl(new minemap.Navigation(), "bottom-right");
+        map.addControl(new minemap.Scale(), "top-right");
+        map.addControl(new minemap.Scale());
+
+        var isBrowserSupported = minemap.supported(); // 看看浏览器是否支持 JS API
+        console.log(isBrowserSupported);
+
+        /* 事件交互 :: 非常重要的功能
+        map.on("movestart",function(){
+            console.log("mouseCatch!"); // 移除时候执行的动作
+        })*/
+
+
+        /*map.service.queryKeywordAroundSearch('肯德基', '110000', '116, 40', 3000, 1, 15, zh_CN, function (error, results) {
+            console.log(results);
+        });*/
+
+
+        //添加popup --- 添加信息窗体(用于对地图要素的详细说明)
+        var el = document.createElement('div');
+        var p1 = document.createElement('div');
+        p1.innerHTML = '点击事件';
+        p1.style.color = "red";
+        p1.style.cursor = "pointer";
+        function _onTitleClick(e) {
+            alert('点击事件')
+        }
+        // 添加点击事件
+        p1.addEventListener('click', _onTitleClick); // 在点击信息窗口的时候，做出怎样的动作
+        el.appendChild(p1);
+        var p2 = document.createElement('div');
+        p2.innerHTML = '信息窗体内容';
+        el.appendChild(p2);
+        
+        var popup = new minemap.Popup({
+                closeOnClick: true,
+                closeButton: true,
+                offset: [0, 0]
+            })
+            .setLngLat([116.46, 39.92])
+            .setDOMContent(el)
+            .addTo(map);
+    </script>
+
+</body>
+
+</html>
